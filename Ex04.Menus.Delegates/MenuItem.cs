@@ -7,27 +7,45 @@ namespace Ex04.Menus.Delegates
 {
     public class MenuItem
     {
+        enum eItemType
+        {
+            Menu,
+            Action
+        }
+
         private string m_Name;
         private List<MenuItem> m_SubMenus;// TODO: change name
-        private readonly MenuItem r_Base;
+        private MenuItem m_Base;
         private readonly int m_LevelInMenu;
         private event Action<MenuItem> m_Chosen;
+        private eItemType m_ItemType;
 
-        public MenuItem(string i_Name, List<MenuItem> i_SubMenus, MenuItem i_RBase)
+        public MenuItem(string i_Name, List<MenuItem> i_SubMenus)
         {
             m_Name = i_Name;
             m_SubMenus = i_SubMenus;
             m_LevelInMenu = 1;
-            r_Base = i_RBase;
-            if (i_RBase != null)
+            m_ItemType = i_SubMenus == null ? eItemType.Action : eItemType.Menu;
+        }
+
+        public MenuItem(string i_Name, List<MenuItem> i_SubMenus, ref MenuItem io_RBase)
+        {
+            m_Name = i_Name;
+            m_SubMenus = i_SubMenus;
+            m_LevelInMenu = 1;
+            m_Base = io_RBase;
+            if (io_RBase != null)
             {
-                m_LevelInMenu += i_RBase.m_LevelInMenu;
+                m_LevelInMenu += io_RBase.m_LevelInMenu;
+                io_RBase.AddItem(this);
             }
+
+            m_ItemType = i_SubMenus == null ? eItemType.Action : eItemType.Menu;
         }
         //TODO : check access modifyers
         public MenuItem Base
         {
-            get => r_Base;
+            get => m_Base;
         }
 
         public string Name
@@ -51,7 +69,55 @@ namespace Ex04.Menus.Delegates
         {
             get => m_Chosen;
             set => m_Chosen = value;
+        }
 
+        public virtual void AddItem(MenuItem i_Item)
+        {
+            MenuItem goBack;
+            if (m_ItemType == eItemType.Action)
+            {
+                goBack = new MenuItem("Go Back", null);
+                goBack.setBase(this);
+                m_Chosen += goBackRequest;
+                m_SubMenus.Add(goBack);
+                m_ItemType = eItemType.Menu;
+            }
+
+            m_SubMenus.Add(i_Item);
+        }
+
+        protected virtual void goBackRequest(MenuItem i_MenuItem)
+        {
+            Console.Clear();
+            i_MenuItem.m_Base.Base.Show();
+        }
+
+        private void aMethodForWindowsToTellMeIWasClicked()
+        {
+            Console.WriteLine("An input has been entered.");
+            OnChosen(); //generic method
+        }
+
+        private void setBase(MenuItem i_Base)
+        {
+            m_Base = i_Base;
+        }
+
+        public void Show()
+        {
+            uint parsedChoice;
+
+            Console.WriteLine(this.ToString());
+            //TODO
+            //string userChoice = Console.ReadLine();
+            //parsedChoice = int.Parse(userChoice);
+            while (!uint.TryParse(Console.ReadLine(),out parsedChoice) && parsedChoice >= m_SubMenus.Count)
+            {
+                Console.WriteLine($"{parsedChoice} is not available");
+            }
+
+            m_SubMenus[((int)parsedChoice)].
+            //m_ItemsBelow[parsedChoice].aMethodForWindowsToTellMeIWasClicked();//TODO
         }
 
         public override string ToString()
@@ -66,10 +132,6 @@ namespace Ex04.Menus.Delegates
 
             consoleMessege.AppendLine(string.Format("{0}. {1}({2})", 0, m_SubMenus[0].Name, "Action"));
             consoleMessege.AppendLine("Which opertion do you wish to operate");
-            // TODO
-            string userChoice = Console.ReadLine();
-            int parsedChoice = int.Parse(userChoice);
-            //m_ItemsBelow[parsedChoice].aMethodForWindowsToTellMeIWasClicked();//TODO
 
             return consoleMessege.ToString();
         }
