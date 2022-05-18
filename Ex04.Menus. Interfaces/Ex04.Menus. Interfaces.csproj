@@ -44,8 +44,14 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DateMenu.cs" />
+    <Compile Include="MainMenu.cs" />
+    <Compile Include="MenuItem.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SpacesMenu.cs" />
+    <Compile Include="TimeMenu.cs" />
+    <Compile Include="VersionMenu.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
