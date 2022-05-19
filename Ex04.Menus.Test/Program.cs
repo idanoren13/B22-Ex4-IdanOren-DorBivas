@@ -9,6 +9,9 @@ namespace Ex04.Menus.Test
     {
         public static void Main()
         {
+            Console.WriteLine("Delegates implemented menu");
+            ConsoleHandler consoleManage = new ConsoleHandler();
+            consoleManage.Run();
         }
     }
 }

@@ -7,45 +7,47 @@ namespace Ex04.Menus.Delegates
 {
     public class MenuItem
     {
-        enum eItemType
+        public enum eItemType
         {
-            Menu,
-            Action
+            Action,
+            Menu
         }
 
-        private string m_Name;
-        private List<MenuItem> m_SubMenus;// TODO: change name
-        private MenuItem m_Base;
         private readonly int m_LevelInMenu;
-        private event Action<MenuItem> m_Chosen;
-        private eItemType m_ItemType;
+        private bool m_continueShowLoop = true;
+        private string m_Name;
+        private MenuItem m_Base;
+        protected eItemType m_ItemType;
+        protected List<MenuItem> m_SubMenus;
+        public event Action<MenuItem> Chosen;
 
-        public MenuItem(string i_Name, List<MenuItem> i_SubMenus)
+        protected MenuItem(string i_Name, List<MenuItem> i_SubMenus)
         {
             m_Name = i_Name;
             m_SubMenus = i_SubMenus;
             m_LevelInMenu = 1;
-            m_ItemType = i_SubMenus == null ? eItemType.Action : eItemType.Menu;
+            if (i_SubMenus != null)
+            {
+                m_ItemType = i_SubMenus.Count == 0 ? eItemType.Action : eItemType.Menu;
+            }
         }
 
-        public MenuItem(string i_Name, List<MenuItem> i_SubMenus, ref MenuItem io_RBase)
+        public MenuItem(string i_Name, List<MenuItem> i_SubMenus, MenuItem io_RBase)
         {
+            m_LevelInMenu = 1;
             m_Name = i_Name;
             m_SubMenus = i_SubMenus;
-            m_LevelInMenu = 1;
+            if (i_SubMenus != null)
+            {
+                m_ItemType = i_SubMenus.Count == 0 ? eItemType.Action : eItemType.Menu;
+            }
+            
             m_Base = io_RBase;
             if (io_RBase != null)
             {
                 m_LevelInMenu += io_RBase.m_LevelInMenu;
                 io_RBase.AddItem(this);
             }
-
-            m_ItemType = i_SubMenus == null ? eItemType.Action : eItemType.Menu;
-        }
-        //TODO : check access modifyers
-        public MenuItem Base
-        {
-            get => m_Base;
         }
 
         public string Name
@@ -54,21 +56,9 @@ namespace Ex04.Menus.Delegates
             set => m_Name = value;
         }
 
-        public List<MenuItem> SubMenus
+        private eItemType ItemType
         {
-            get => m_SubMenus;
-            set => m_SubMenus = value;
-        }
-
-        public int LevelInMenu
-        {
-            get => m_LevelInMenu;
-        }
-
-        public Action<MenuItem> Chosen
-        {
-            get => m_Chosen;
-            set => m_Chosen = value;
+            get => m_ItemType;
         }
 
         public virtual void AddItem(MenuItem i_Item)
@@ -78,24 +68,39 @@ namespace Ex04.Menus.Delegates
             {
                 goBack = new MenuItem("Go Back", null);
                 goBack.setBase(this);
-                m_Chosen += goBackRequest;
+                goBack.Chosen += goBackRequest_Chosen;
                 m_SubMenus.Add(goBack);
                 m_ItemType = eItemType.Menu;
             }
 
-            m_SubMenus.Add(i_Item);
+            m_SubMenus.Insert(0, i_Item);
         }
 
-        protected virtual void goBackRequest(MenuItem i_MenuItem)
+        private void goBackRequest_Chosen(MenuItem i_MenuItem)
         {
+            m_continueShowLoop = false;
             Console.Clear();
-            i_MenuItem.m_Base.Base.Show();
+        }
+
+        public void goFowradRequest_Chosen(MenuItem i_MenuItem)
+        {
+            m_continueShowLoop = true;
+            Console.Clear();
+            i_MenuItem.Show();
         }
 
         private void aMethodForWindowsToTellMeIWasClicked()
         {
             Console.WriteLine("An input has been entered.");
-            OnChosen(); //generic method
+            OnChoosig();
+        }
+
+        private void OnChoosig()
+        {
+            if (Chosen != null)
+            {
+                Chosen.Invoke(this);
+            }
         }
 
         private void setBase(MenuItem i_Base)
@@ -106,32 +111,36 @@ namespace Ex04.Menus.Delegates
         public void Show()
         {
             uint parsedChoice;
+            bool isValid;
 
-            Console.WriteLine(this.ToString());
-            //TODO
-            //string userChoice = Console.ReadLine();
-            //parsedChoice = int.Parse(userChoice);
-            while (!uint.TryParse(Console.ReadLine(),out parsedChoice) && parsedChoice >= m_SubMenus.Count)
+            while (m_continueShowLoop)
             {
-                Console.WriteLine($"{parsedChoice} is not available");
-            }
+                Console.WriteLine(this.ToString());
+                isValid = uint.TryParse(Console.ReadLine(), out parsedChoice);
+                while (!isValid || parsedChoice >= m_SubMenus.Count)
+                {
+                    Console.WriteLine($"ivalid input please enter number between 0 to {m_SubMenus.Count - 1}");
+                    isValid = uint.TryParse(Console.ReadLine(), out parsedChoice);
+                }
 
-            m_SubMenus[((int)parsedChoice)].
-            //m_ItemsBelow[parsedChoice].aMethodForWindowsToTellMeIWasClicked();//TODO
+                Console.Clear();
+                m_SubMenus[((int)parsedChoice)].aMethodForWindowsToTellMeIWasClicked(); 
+            }
         }
 
         public override string ToString()
         {
+            int i = 0;
             StringBuilder consoleMessege = new StringBuilder();
-            
-            for (int i = 1; i < m_SubMenus.Count; i++)
+            consoleMessege.Append($"Current Menu Level: {m_LevelInMenu}{Environment.NewLine}");
+            foreach (MenuItem item in m_SubMenus)
             {
-                string actionType = m_SubMenus[i] == null ? "Action" : "Sub Menu";
-                consoleMessege.AppendLine(string.Format("{0}. {1}({2})", i, m_SubMenus[i].Name, actionType));
+                string actionType = item.ItemType == eItemType.Action ? "Action" : "Sub Menu";
+                consoleMessege.Append(string.Format("{0}. {1}({2}){3}", i, item.Name, actionType, Environment.NewLine));
+                i++;
             }
 
-            consoleMessege.AppendLine(string.Format("{0}. {1}({2})", 0, m_SubMenus[0].Name, "Action"));
-            consoleMessege.AppendLine("Which opertion do you wish to operate");
+            consoleMessege.Remove(consoleMessege.Length - 1, 1);
 
             return consoleMessege.ToString();
         }
