@@ -19,6 +19,7 @@ namespace Ex04.Menus.Delegates
         private MenuItem m_Base;
         protected eItemType m_ItemType;
         protected List<MenuItem> m_SubMenus;
+
         public event Action<MenuItem> Chosen;
 
         protected MenuItem(string i_Name, List<MenuItem> i_SubMenus)
