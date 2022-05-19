@@ -7,16 +7,16 @@ namespace Ex04.Menus.Delegates
 {
     public class MainMenu : MenuItem
     {
-        public MainMenu(string i_Name, List<MenuItem> i_SubMenus) : base(i_Name, i_SubMenus) 
+        public MainMenu(string i_Name, Dictionary<int, MenuItem> i_SubMenus) : base(i_Name, i_SubMenus) 
         {
         }
 
         public override void AddItem(MenuItem i_Item)
         {
             base.AddItem(i_Item); 
-            if (m_SubMenus.Last().Name == "Go Back")
+            if (m_SubMenuDict.First().Value.Name == "Go Back")
             {
-                m_SubMenus.Last().Name = "Exit";
+                m_SubMenuDict.First().Value.Name = "Exit";
             }
         }
     }
