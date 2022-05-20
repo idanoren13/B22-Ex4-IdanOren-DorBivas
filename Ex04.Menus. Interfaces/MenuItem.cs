@@ -7,8 +7,9 @@ namespace Ex04.Menus.Interfaces
         void Show();
     }
 
-    public class MenuItem
+    public abstract class MenuItem
     {
+        protected enum eUserOptions {Zero, One, Two}
         public readonly List<IMenuObserver> r_MenuObservers = new List<IMenuObserver>();
         protected readonly List<MenuItem> r_MenuItems = new List<MenuItem>();
 
@@ -22,16 +23,14 @@ namespace Ex04.Menus.Interfaces
             get => r_MenuItems;
         }
 
-        public void AttachObserver(IMenuObserver i_MenuItemObserver)
+        public void AddObserver(IMenuObserver i_MenuObserver)
         {
-            r_MenuObservers.Add(i_MenuItemObserver);
+            r_MenuObservers.Add(i_MenuObserver);
         }
 
-        public void DetachObserver(IMenuObserver i_MenuItemObserver)
+        public void RemoveObserver(IMenuObserver i_MenuObserver)
         {
-            r_MenuObservers.Remove(i_MenuItemObserver);
+            r_MenuObservers.Remove(i_MenuObserver);
         }
-
-
     }
 }

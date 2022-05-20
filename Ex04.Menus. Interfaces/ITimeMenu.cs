@@ -7,7 +7,7 @@ namespace Ex04.Menus.Interfaces
         DateTime ReportTime();
     }
 
-    public class MenuItemTime : MenuItem, IMenuObserver
+    public class ITimeMenu : MenuItem, IMenuObserver
     {
         public void Show()
         {
