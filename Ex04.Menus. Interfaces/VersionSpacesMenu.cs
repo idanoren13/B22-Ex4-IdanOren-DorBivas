@@ -1,36 +1,28 @@
-﻿// $G$ DSN-999 (-10) The specific operation method shouldn't be part of the Menu project.
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+
 namespace Ex04.Menus.Interfaces
 {
-    using System;
-    using System.Collections.Generic;
-
-    public class MainMenu : MenuItem
+    class VersionSpacesMenu : MenuItem, IMenuObserver
     {
         private eUserOptions m_UserInput;
-        private readonly List<string> m_MainMenuMessages;
-        private const string k_MenuHeadLine = "Main menu Interface:";
-        private const string k_BackMessage = "0 - Exit\n";
+        private readonly List<string> r_VersionSpacesMenuMessages;
+        private const string k_MenuHeadLine = "Version and spaces menu";
+        private const string k_BackMessage = "0 - Back\n"; // todo ?
 
-        public MainMenu()
+        public VersionSpacesMenu()
         {
-            m_MainMenuMessages = new List<string>();
-            initiateSubMenus();
-            buildMainMenu();
+            r_VersionSpacesMenuMessages = new List<string>();
+            initiateMenu();
         }
 
-        private void initiateSubMenus()
+        private void initiateMenu()
         {
-            VersionSpacesMenu versionAndSpacesMenu = new VersionSpacesMenu();
-            r_MenuItems.Add(versionAndSpacesMenu);
-            DateTimeMenu dateAndTimeMenu = new DateTimeMenu();
-            r_MenuItems.Add(dateAndTimeMenu);
-        }
-
-        private void buildMainMenu()
-        {
-            m_MainMenuMessages.Add("Version and Spaces");
-            m_MainMenuMessages.Add("Show Date/Time");
-            displayMenuBody(m_MainMenuMessages, k_MenuHeadLine, k_BackMessage);
+            r_VersionSpacesMenuMessages.Add("Count the amount of Spaces");
+            r_VersionSpacesMenuMessages.Add("Display version");
+            displayMenuBody(r_VersionSpacesMenuMessages, k_MenuHeadLine, k_BackMessage);
         }
 
         public void Show()
@@ -61,7 +53,7 @@ namespace Ex04.Menus.Interfaces
         private void checkInput(string i_UserInput)
         {
             int tryUserInput;
-            bool isNumeric = int.TryParse(i_UserInput,out tryUserInput);
+            bool isNumeric = int.TryParse(i_UserInput, out tryUserInput);
 
             if (!isNumeric)
             {
@@ -94,4 +86,4 @@ namespace Ex04.Menus.Interfaces
         }
     }
 }
-}
+

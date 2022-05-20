@@ -1,45 +1,26 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-namespace Ex04.Menus.Interfaces
+﻿namespace Ex04.Menus.Interfaces
 {
+    using System;
+    using System.Collections.Generic;
+
     class DateTimeMenu : MenuItem, IMenuObserver
     {
-
         private eUserOptions m_UserInput;
-        private StringBuilder m_StringBuilder;
-        //private static readonly string[] r_DateTimeMessages = { "Show Date/Time " , $"0 - Back{Environment.NewLine}", "Please select option:" };
-
-        private const string k_HeadLine = "Show Date/Time ";
-        private const string k_ExitMessage = "0 - Back\n";
-        private const string k_SelectMessage = "Please select option:";
-
-        private readonly List<string> r_DateTimeMenuMessages = new List<string>();
+        private readonly List<string> r_DateTimeMenuMessages ;
+        private const string k_MenuHeadLine = "Show Date/Time";
+        private const string k_backMessage = "0 - Back\n";
 
         public DateTimeMenu()
         {
-            m_StringBuilder = new StringBuilder();
+            r_DateTimeMenuMessages = new List<string>();
             initiateMenu();
         }
 
         private void initiateMenu()
         {
-            int menuIndex = 1;
-
             r_DateTimeMenuMessages.Add("Show Date");
             r_DateTimeMenuMessages.Add("Show Time");
-            m_StringBuilder.AppendLine(k_HeadLine);
-            foreach (string message in r_DateTimeMenuMessages)
-            {
-                m_StringBuilder.Append($"{menuIndex} - ");
-                m_StringBuilder.AppendLine(message);
-                menuIndex++;
-            }
-
-            m_StringBuilder.AppendLine(k_ExitMessage);
-            m_StringBuilder.AppendLine(k_SelectMessage);
+            displayMenuBody(r_DateTimeMenuMessages, k_MenuHeadLine, k_backMessage);
         }
 
         public void Show()
@@ -62,18 +43,24 @@ namespace Ex04.Menus.Interfaces
 
         private void consoleWrapper()
         {
-            Console.Write(m_StringBuilder.ToString());
+            Console.Write(r_MenuBuffer.ToString());
             checkInput(Console.ReadLine());
             Console.Clear();
         }
 
-        private void checkInput(string  i_UserInput)
+        private void checkInput(string i_UserInput)
         {
-            int tryUserInput = int.Parse(i_UserInput);
+            int tryUserInput;
+            bool isNumeric = int.TryParse(i_UserInput, out tryUserInput);
+
+            if (!isNumeric)
+            {
+                throw new FormatException($"non format input!{Environment.NewLine}");
+            }
 
             if (tryUserInput < 0 || tryUserInput > r_MenuItems.Count)
             {
-                throw new ArgumentOutOfRangeException("inserted value out of range\n");
+                throw new ArgumentOutOfRangeException($"inserted value out of range{Environment.NewLine}");
             }
 
             m_UserInput = (eUserOptions)tryUserInput;
