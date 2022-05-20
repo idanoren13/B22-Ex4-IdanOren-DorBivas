@@ -45,14 +45,14 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DateTimeMenu.cs" />
-    <Compile Include="IDateMenu.cs" />
+    <Compile Include="DateMenu.cs" />
     <Compile Include="MainMenu.cs" />
     <Compile Include="AbstractMenu.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="ISpacesMenu.cs" />
-    <Compile Include="ITimeMenu.cs" />
+    <Compile Include="SpacesMenu.cs" />
+    <Compile Include="TimeMenu.cs" />
     <Compile Include="VersionSpacesMenu.cs" />
-    <Compile Include="IVersionMenu.cs" />
+    <Compile Include="VersionMenu.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

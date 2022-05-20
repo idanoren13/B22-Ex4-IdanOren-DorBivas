@@ -1,32 +1,28 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Text;
 
 namespace Ex04.Menus.Interfaces
 {
-    public interface IMenuObserver
+    public interface IMenu
     {
         void Show();
     }
 
-    public abstract class AbstractMenu 
+    public abstract class AbstractMenu : IMenu
     {
-        protected enum eUserOptions {Zero, One, Two}
-        public readonly List<IMenuObserver> r_MenuObservers = new List<IMenuObserver>(); // todo ?
+        protected enum eUserOptions { Zero, One, Two }
+        protected eUserOptions m_UserInput;
         protected readonly List<AbstractMenu> r_MenuItems = new List<AbstractMenu>();
         protected readonly StringBuilder r_MenuBuffer = new StringBuilder();
         private const string k_SelectMessage = "Please select an option:";
-
-        List<IMenuObserver> MenuObservers
-        {
-            get => r_MenuObservers;
-        }
 
         public List<AbstractMenu> MenuItems
         {
             get => r_MenuItems;
         }
 
-        protected void displayMenuBody(List<string> i_MenuMessages, string i_MenuHeadLine, string i_BackMessage)
+        protected virtual void buildMenuBody(List<string> i_MenuMessages, string i_MenuHeadLine, string i_BackMessage)
         {
             int menuIndex = 1;
             r_MenuBuffer.AppendLine(i_MenuHeadLine);
@@ -41,14 +37,64 @@ namespace Ex04.Menus.Interfaces
             r_MenuBuffer.AppendLine(k_SelectMessage);
         }
 
-        protected void AddObserver(IMenuObserver i_MenuObserver)
+        public virtual void Show()
         {
-            r_MenuObservers.Add(i_MenuObserver);
+            do
+            {
+                try
+                {
+                    consoleWrapper();
+                    executeAction();
+                }
+                catch (Exception e)
+                {
+                    Console.Clear();
+                    Console.WriteLine(e.Message);
+                }
+
+            } while (m_UserInput != eUserOptions.Zero);
         }
 
-        protected void RemoveObserver(IMenuObserver i_MenuObserver)
+        protected virtual void consoleWrapper()
         {
-            r_MenuObservers.Remove(i_MenuObserver);
+            Console.Write(r_MenuBuffer.ToString());
+            checkInput(Console.ReadLine());
+            Console.Clear();
+        }
+
+        protected virtual void checkInput(string i_UserInput)
+        {
+            int tryUserInput;
+            bool isNumeric = int.TryParse(i_UserInput, out tryUserInput);
+
+            if (!isNumeric)
+            {
+                throw new FormatException($"non format input!{Environment.NewLine}");
+            }
+
+            if (tryUserInput < 0 || tryUserInput > r_MenuItems.Count)
+            {
+                throw new ArgumentOutOfRangeException($"inserted value out of range{Environment.NewLine}");
+            }
+
+            m_UserInput = (eUserOptions)tryUserInput;
+        }
+
+        protected virtual void executeAction()
+        {
+            switch (m_UserInput)
+            {
+                case eUserOptions.Zero:
+                    break;
+                case eUserOptions.One:
+                    r_MenuItems[(int)m_UserInput - 1].Show();
+                    break;
+                case eUserOptions.Two:
+                    r_MenuItems[(int)m_UserInput - 1].Show();
+                    break;
+                default:
+                    break;
+            }
         }
     }
 }
