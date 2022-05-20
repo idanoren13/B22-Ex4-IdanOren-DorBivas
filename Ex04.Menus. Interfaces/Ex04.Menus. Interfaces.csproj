@@ -44,8 +44,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="DateTimeMenu.cs" />
     <Compile Include="DateMenu.cs" />
+    <Compile Include="DateTimeMenu.cs" />
     <Compile Include="MainMenu.cs" />
     <Compile Include="AbstractMenu.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
