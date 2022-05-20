@@ -48,8 +48,10 @@ namespace Ex04.Menus.Test
         public void CountSpaces_Chosen(MenuItem i_Invoker)
         {
             int numberOfSpaces = 0;
+            string userInput;
+
             Console.WriteLine("Please enter a sentence: ");
-            string userInput = Console.ReadLine();
+            userInput = Console.ReadLine();
             foreach (char character in userInput)
             {
                 if (char.IsWhiteSpace(character))

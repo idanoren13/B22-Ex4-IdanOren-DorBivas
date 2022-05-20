@@ -44,15 +44,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="DateMenu.cs" />
-    <Compile Include="DateTimeMenu.cs" />
+    <Compile Include="FinalMenuItem.cs" />
     <Compile Include="MainMenu.cs" />
     <Compile Include="AbstractMenu.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="SpacesMenu.cs" />
-    <Compile Include="TimeMenu.cs" />
-    <Compile Include="VersionSpacesMenu.cs" />
-    <Compile Include="VersionMenu.cs" />
+    <Compile Include="SubMenuItem.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

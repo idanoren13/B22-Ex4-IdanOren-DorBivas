@@ -1,40 +1,37 @@
 ﻿namespace Ex04.Menus.Test
 {
-    using Ex04.Menus.Interfaces;
-    using System;
     using System.Collections.Generic;
+    using Ex04.Menus.Interfaces;
+    using Ex04.Menus.Test.InterfaceMethods;
 
     class InterfaceTest
     {
         private readonly MainMenu r_MainMenu;
-        private readonly List<AbstractMenu> r_MenuItems;
 
         public InterfaceTest()
         {
-            r_MainMenu = new MainMenu();
-            r_MenuItems = new List<AbstractMenu>();
-            attachMenus();
-        }
-
-        private void attachMenus()
-        {
-            AbstractMenu version = new VersionMenu();
-            AbstractMenu spaces = new SpacesMenu();
-            AbstractMenu time = new TimeMenu();
-            AbstractMenu date = new DateMenu();
-            r_MenuItems.Add(version);
-            r_MenuItems.Add(spaces);
-            r_MenuItems.Add(time);
-            r_MenuItems.Add(date);
-            r_MainMenu.MenuItems[0].MenuItems.Add(spaces);
-            r_MainMenu.MenuItems[0].MenuItems.Add(version);
-            r_MainMenu.MenuItems[1].MenuItems.Add(date);
-            r_MainMenu.MenuItems[1].MenuItems.Add(time);
+            r_MainMenu = new MainMenu("Main delegates", new Dictionary<int, AbstractMenu>());
+            SubMenuItem countSpacesAndShowVersion = new SubMenuItem("Version and Spaces", new Dictionary<int, AbstractMenu>(), r_MainMenu);
+            SubMenuItem showTimeAndShowDate = new SubMenuItem("Shows Time/Date", new Dictionary<int, AbstractMenu>(), r_MainMenu);
+            addSpacesAndShowVersion(countSpacesAndShowVersion);
+            addShowTimeAndShowDate(showTimeAndShowDate);
         }
 
         public void Run()
         {
             r_MainMenu.Show();
+        }
+
+        private void addShowTimeAndShowDate(SubMenuItem i_ShowTimeAndShowDate)
+        {
+            DateMenu showDate = new DateMenu("Show date", i_ShowTimeAndShowDate);
+            TimeMenu showTime = new TimeMenu("Show Time", i_ShowTimeAndShowDate);
+        }
+
+        private void addSpacesAndShowVersion(SubMenuItem countSpacesAndShowVersion)
+        {
+            SpacesMenu countSpaces = new SpacesMenu("Count spaces", countSpacesAndShowVersion);
+            VersionMenu showVersion = new VersionMenu("Show Version", countSpacesAndShowVersion);
         }
     }
 }

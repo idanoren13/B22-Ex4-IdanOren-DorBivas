@@ -1,9 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace Ex04.Menus.Interfaces
+﻿namespace Ex04.Menus.Interfaces
 {
+    using System.Collections.Generic;
+    
     public interface IMenu
     {
         void Show();
@@ -11,90 +9,48 @@ namespace Ex04.Menus.Interfaces
 
     public abstract class AbstractMenu : IMenu
     {
-        protected enum eUserOptions { Zero, One, Two }
-        protected eUserOptions m_UserInput;
-        protected readonly List<AbstractMenu> r_MenuItems = new List<AbstractMenu>();
-        protected readonly StringBuilder r_MenuBuffer = new StringBuilder();
-        private const string k_SelectMessage = "Please select an option:";
-
-        public List<AbstractMenu> MenuItems
+        public enum eItemType
         {
-            get => r_MenuItems;
+            Action,
+            Menu
         }
 
-        protected virtual void buildMenuBody(List<string> i_MenuMessages, string i_MenuHeadLine, string i_BackMessage)
-        {
-            int menuIndex = 1;
-            r_MenuBuffer.AppendLine(i_MenuHeadLine);
-            foreach (string message in i_MenuMessages)
-            {
-                r_MenuBuffer.Append($"{menuIndex} - ");
-                r_MenuBuffer.AppendLine(message);
-                menuIndex++;
-            }
+        protected const string k_GoBackName = "Go Back";
+        protected int m_LevelInMenu;
+        protected bool m_continueShowLoop = true;
+        protected string m_Name;
+        protected AbstractMenu m_Base;
+        protected eItemType m_ItemType = eItemType.Action;
+        protected int m_UserInput;
+        protected Dictionary<int, AbstractMenu> m_MenuItems;
 
-            r_MenuBuffer.AppendLine(i_BackMessage);
-            r_MenuBuffer.AppendLine(k_SelectMessage);
+        public Dictionary<int, AbstractMenu> MenuItems
+        {
+            get => m_MenuItems;
         }
 
-        public virtual void Show()
+        public int Level 
         {
-            do
-            {
-                try
-                {
-                    consoleWrapper();
-                    executeAction();
-                }
-                catch (Exception e)
-                {
-                    Console.Clear();
-                    Console.WriteLine(e.Message);
-                }
-
-            } while (m_UserInput != eUserOptions.Zero);
+            get => m_LevelInMenu;
+            set => m_LevelInMenu = value;
         }
 
-        protected virtual void consoleWrapper()
+        public eItemType ItemType
         {
-            Console.Write(r_MenuBuffer.ToString());
-            checkInput(Console.ReadLine());
-            Console.Clear();
+            get => m_ItemType;
         }
 
-        protected virtual void checkInput(string i_UserInput)
+        public string Name
         {
-            int tryUserInput;
-            bool isNumeric = int.TryParse(i_UserInput, out tryUserInput);
-
-            if (!isNumeric)
-            {
-                throw new FormatException($"non format input!{Environment.NewLine}");
-            }
-
-            if (tryUserInput < 0 || tryUserInput > r_MenuItems.Count)
-            {
-                throw new ArgumentOutOfRangeException($"inserted value out of range{Environment.NewLine}");
-            }
-
-            m_UserInput = (eUserOptions)tryUserInput;
+            get => m_Name;
+            set => m_Name = value;
         }
 
-        protected virtual void executeAction()
+        public bool ContinueShowLoop
         {
-            switch (m_UserInput)
-            {
-                case eUserOptions.Zero:
-                    break;
-                case eUserOptions.One:
-                    r_MenuItems[(int)m_UserInput - 1].Show();
-                    break;
-                case eUserOptions.Two:
-                    r_MenuItems[(int)m_UserInput - 1].Show();
-                    break;
-                default:
-                    break;
-            }
+            set => m_continueShowLoop = value;
         }
+
+        public abstract void Show();
     }
 }
