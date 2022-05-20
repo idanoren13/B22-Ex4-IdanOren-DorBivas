@@ -8,21 +8,20 @@ namespace Ex04.Menus.Interfaces
         void Show();
     }
 
-    public abstract class MenuItem
+    public abstract class AbstractMenu 
     {
         protected enum eUserOptions {Zero, One, Two}
         public readonly List<IMenuObserver> r_MenuObservers = new List<IMenuObserver>(); // todo ?
-        protected readonly List<MenuItem> r_MenuItems = new List<MenuItem>();
+        protected readonly List<AbstractMenu> r_MenuItems = new List<AbstractMenu>();
         protected readonly StringBuilder r_MenuBuffer = new StringBuilder();
-
         private const string k_SelectMessage = "Please select an option:";
 
         List<IMenuObserver> MenuObservers
         {
-            get=> r_MenuObservers;
+            get => r_MenuObservers;
         }
 
-        public List<MenuItem> MenuItems
+        public List<AbstractMenu> MenuItems
         {
             get => r_MenuItems;
         }

@@ -3,7 +3,7 @@
     using System;
     using System.Collections.Generic;
 
-    class DateTimeMenu : MenuItem, IMenuObserver
+    class DateTimeMenu : AbstractMenu, IMenuObserver
     {
         private eUserOptions m_UserInput;
         private readonly List<string> r_DateTimeMenuMessages ;

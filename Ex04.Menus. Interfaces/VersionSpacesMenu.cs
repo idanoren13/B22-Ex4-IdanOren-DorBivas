@@ -5,7 +5,7 @@ using System.Text;
 
 namespace Ex04.Menus.Interfaces
 {
-    class VersionSpacesMenu : MenuItem, IMenuObserver
+    class VersionSpacesMenu : AbstractMenu, IMenuObserver
     {
         private eUserOptions m_UserInput;
         private readonly List<string> r_VersionSpacesMenuMessages;

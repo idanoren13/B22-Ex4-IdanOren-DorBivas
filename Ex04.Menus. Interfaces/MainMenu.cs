@@ -4,7 +4,7 @@ namespace Ex04.Menus.Interfaces
     using System;
     using System.Collections.Generic;
 
-    public class MainMenu : MenuItem
+    public class MainMenu : AbstractMenu
     {
         private eUserOptions m_UserInput;
         private readonly List<string> m_MainMenuMessages;

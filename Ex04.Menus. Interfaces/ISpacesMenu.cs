@@ -7,7 +7,7 @@ namespace Ex04.Menus.Interfaces
         int ReportSpaces(string i_Input);
     }
 
-    public class ISpacesMenu : MenuItem, IMenuObserver
+    public class ISpacesMenu : AbstractMenu, IMenuObserver
     {
         public void Show()
         {

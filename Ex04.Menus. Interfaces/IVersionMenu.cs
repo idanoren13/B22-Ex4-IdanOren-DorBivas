@@ -7,7 +7,7 @@ namespace Ex04.Menus.Interfaces
         string ReportVersion();
     }
 
-    public class IVersionMenu : MenuItem, IMenuObserver
+    public class IVersionMenu : AbstractMenu, IMenuObserver
     {
         public void Show()
         {
