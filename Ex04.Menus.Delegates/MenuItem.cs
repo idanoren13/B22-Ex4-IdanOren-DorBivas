@@ -18,14 +18,14 @@ namespace Ex04.Menus.Delegates
         private string m_Name;
         private MenuItem m_Base;
         protected eItemType m_ItemType;
-        protected List<MenuItem> m_SubMenus;
+        protected Dictionary<int, MenuItem> m_SubMenuDict;
 
         public event Action<MenuItem> Chosen;
 
-        protected MenuItem(string i_Name, List<MenuItem> i_SubMenus)
+        protected MenuItem(string i_Name, Dictionary<int, MenuItem> i_SubMenus)
         {
             m_Name = i_Name;
-            m_SubMenus = i_SubMenus;
+            m_SubMenuDict = i_SubMenus;
             m_LevelInMenu = 1;
             if (i_SubMenus != null)
             {
@@ -33,11 +33,11 @@ namespace Ex04.Menus.Delegates
             }
         }
 
-        public MenuItem(string i_Name, List<MenuItem> i_SubMenus, MenuItem io_RBase)
+        public MenuItem(string i_Name, Dictionary<int, MenuItem> i_SubMenus, MenuItem io_RBase)
         {
             m_LevelInMenu = 1;
             m_Name = i_Name;
-            m_SubMenus = i_SubMenus;
+            m_SubMenuDict = i_SubMenus;
             if (i_SubMenus != null)
             {
                 m_ItemType = i_SubMenus.Count == 0 ? eItemType.Action : eItemType.Menu;
@@ -70,11 +70,11 @@ namespace Ex04.Menus.Delegates
                 goBack = new MenuItem("Go Back", null);
                 goBack.setBase(this);
                 goBack.Chosen += goBackRequest_Chosen;
-                m_SubMenus.Add(goBack);
+                m_SubMenuDict.Add(0, goBack);
                 m_ItemType = eItemType.Menu;
             }
 
-            m_SubMenus.Insert(0, i_Item);
+            m_SubMenuDict.Add(m_SubMenuDict.Count, i_Item);
         }
 
         private void goBackRequest_Chosen(MenuItem i_MenuItem)
@@ -118,32 +118,38 @@ namespace Ex04.Menus.Delegates
             {
                 Console.WriteLine(this.ToString());
                 isValid = uint.TryParse(Console.ReadLine(), out parsedChoice);
-                while (!isValid || parsedChoice >= m_SubMenus.Count)
+                while (!isValid || parsedChoice >= m_SubMenuDict.Count)
                 {
-                    Console.WriteLine($"ivalid input please enter number between 0 to {m_SubMenus.Count - 1}");
+                    Console.WriteLine($"ivalid input please enter number between 0 to {m_SubMenuDict.Count - 1}");
                     isValid = uint.TryParse(Console.ReadLine(), out parsedChoice);
                 }
 
                 Console.Clear();
-                m_SubMenus[((int)parsedChoice)].aMethodForWindowsToTellMeIWasClicked(); 
+                m_SubMenuDict[((int)parsedChoice)].aMethodForWindowsToTellMeIWasClicked(); 
             }
         }
 
         public override string ToString()
         {
-            int i = 0;
             StringBuilder consoleMessege = new StringBuilder();
             consoleMessege.Append($"Current Menu Level: {m_LevelInMenu}{Environment.NewLine}");
-            foreach (MenuItem item in m_SubMenus)
+
+            foreach (KeyValuePair<int, MenuItem> item in m_SubMenuDict.Skip(1))
             {
-                string actionType = item.ItemType == eItemType.Action ? "Action" : "Sub Menu";
-                consoleMessege.Append(string.Format("{0}. {1}({2}){3}", i, item.Name, actionType, Environment.NewLine));
-                i++;
+                consoleMessege.Append(singleMenuItemToString(item));
             }
 
+            consoleMessege.Append(singleMenuItemToString(m_SubMenuDict.First()));
             consoleMessege.Remove(consoleMessege.Length - 1, 1);
 
             return consoleMessege.ToString();
+        }
+
+        private string singleMenuItemToString(KeyValuePair<int, MenuItem> i_DictionaryItem)
+        {
+            string actionType = i_DictionaryItem.Value.ItemType == eItemType.Action ? "Action" : "Sub Menu";
+
+            return string.Format("{0}. {1}({2}){3}", i_DictionaryItem.Key, i_DictionaryItem.Value.Name, actionType, Environment.NewLine);
         }
     }
 }

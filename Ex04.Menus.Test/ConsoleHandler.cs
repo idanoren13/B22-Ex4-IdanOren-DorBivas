@@ -10,10 +10,10 @@ namespace Ex04.Menus.Test
 
         public ConsoleHandler()
         {
-            m_MainMenu = new MainMenu("Main delegates", new List<MenuItem>());
-            MenuItem countSpacesAndShowVersion = new MenuItem("Version and Spaces", new List<MenuItem>(), m_MainMenu);
+            m_MainMenu = new MainMenu("Main delegates", new Dictionary<int, MenuItem>());
+            MenuItem countSpacesAndShowVersion = new MenuItem("Version and Spaces", new Dictionary<int, MenuItem>(), m_MainMenu);
             countSpacesAndShowVersion.Chosen += countSpacesAndShowVersion.goFowradRequest_Chosen;
-            MenuItem showTimeAndShowDate = new MenuItem("Shows Time/Date", new List<MenuItem>(), m_MainMenu);
+            MenuItem showTimeAndShowDate = new MenuItem("Shows Time/Date", new Dictionary<int, MenuItem>(), m_MainMenu);
             showTimeAndShowDate.Chosen += showTimeAndShowDate.goFowradRequest_Chosen;
             addSpacesAndShowVersion(countSpacesAndShowVersion);
             addShowTimeAndShowDate(showTimeAndShowDate);
