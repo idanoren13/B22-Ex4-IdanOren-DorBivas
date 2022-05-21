@@ -12,9 +12,9 @@ namespace Ex04.Menus.Test
         {
             m_MainMenu = new MainMenu("Main delegates", new Dictionary<int, MenuItem>());
             MenuItem countSpacesAndShowVersion = new MenuItem("Version and Spaces", new Dictionary<int, MenuItem>(), m_MainMenu);
-            countSpacesAndShowVersion.Chosen += countSpacesAndShowVersion.goFowradRequest_Chosen;
+            countSpacesAndShowVersion.Chosen += countSpacesAndShowVersion.GoFowradRequest_Chosen;
             MenuItem showTimeAndShowDate = new MenuItem("Shows Time/Date", new Dictionary<int, MenuItem>(), m_MainMenu);
-            showTimeAndShowDate.Chosen += showTimeAndShowDate.goFowradRequest_Chosen;
+            showTimeAndShowDate.Chosen += showTimeAndShowDate.GoFowradRequest_Chosen;
             addSpacesAndShowVersion(countSpacesAndShowVersion);
             addShowTimeAndShowDate(showTimeAndShowDate);
         }

@@ -83,7 +83,7 @@ namespace Ex04.Menus.Delegates
             Console.Clear();
         }
 
-        public void goFowradRequest_Chosen(MenuItem i_MenuItem)
+        public void GoFowradRequest_Chosen(MenuItem i_MenuItem)
         {
             m_continueShowLoop = true;
             Console.Clear();
