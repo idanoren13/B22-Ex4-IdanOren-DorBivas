@@ -116,7 +116,7 @@
 
             while (m_continueShowLoop)
             {
-                Console.WriteLine(this.ToString());
+                Console.WriteLine(ToString());
                 isValid = uint.TryParse(Console.ReadLine(), out parsedChoice);
                 while (!isValid || parsedChoice >= m_SubMenuDict.Count)
                 {
