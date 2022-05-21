@@ -1,7 +1,7 @@
 ﻿namespace Ex04.Menus.Test.InterfaceMethods
 {
     using System;
-    using System.Collections.Generic;
+    using System.Linq;
     using Ex04.Menus.Interfaces;
 
     public class SpacesMenu : FinalMenuItem
@@ -10,7 +10,7 @@
         {
         }
 
-        public override void Execute()
+        public override void Act()
         {
             CountSpaces();
         }
@@ -22,14 +22,7 @@
 
             Console.WriteLine("Please enter a sentence: ");
             userInput = Console.ReadLine();
-            foreach (char character in userInput)
-            {
-                if (char.IsWhiteSpace(character))
-                {
-                    numberOfSpaces++;
-                }
-            }
-
+            numberOfSpaces = userInput.Count((char currentChar) => currentChar == ' ');
             Console.WriteLine("The number of spaces in the sentence is: {0}", numberOfSpaces);
         }
     }

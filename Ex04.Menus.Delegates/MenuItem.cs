@@ -1,10 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-namespace Ex04.Menus.Delegates
+﻿namespace Ex04.Menus.Delegates
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Text;
+
     public class MenuItem
     {
         public enum eItemType
@@ -13,6 +13,7 @@ namespace Ex04.Menus.Delegates
             Menu
         }
 
+        protected const string k_GoBackName = "Go Back";
         private readonly int m_LevelInMenu;
         private bool m_continueShowLoop = true;
         private string m_Name;
@@ -24,30 +25,29 @@ namespace Ex04.Menus.Delegates
 
         protected MenuItem(string i_Name, Dictionary<int, MenuItem> i_SubMenus)
         {
-            m_Name = i_Name;
-            m_SubMenuDict = i_SubMenus;
             m_LevelInMenu = 1;
-            if (i_SubMenus != null)
-            {
-                m_ItemType = i_SubMenus.Count == 0 ? eItemType.Action : eItemType.Menu;
-            }
+            initiateMenuDetails(i_Name, i_SubMenus);
         }
 
         public MenuItem(string i_Name, Dictionary<int, MenuItem> i_SubMenus, MenuItem io_RBase)
         {
             m_LevelInMenu = 1;
-            m_Name = i_Name;
-            m_SubMenuDict = i_SubMenus;
-            if (i_SubMenus != null)
-            {
-                m_ItemType = i_SubMenus.Count == 0 ? eItemType.Action : eItemType.Menu;
-            }
-            
+            initiateMenuDetails(i_Name, i_SubMenus);
             m_Base = io_RBase;
             if (io_RBase != null)
             {
                 m_LevelInMenu += io_RBase.m_LevelInMenu;
                 io_RBase.AddItem(this);
+            }
+        }
+
+        private void initiateMenuDetails(string i_Name, Dictionary<int, MenuItem> i_SubMenus)
+        {
+            m_Name = i_Name;
+            m_SubMenuDict = i_SubMenus;
+            if (i_SubMenus != null)
+            {
+                m_ItemType = i_SubMenus.Count == 0 ? eItemType.Action : eItemType.Menu;
             }
         }
 
@@ -67,7 +67,7 @@ namespace Ex04.Menus.Delegates
             MenuItem goBack;
             if (m_ItemType == eItemType.Action)
             {
-                goBack = new MenuItem("Go Back", null);
+                goBack = new MenuItem(k_GoBackName, null);
                 goBack.setBase(this);
                 goBack.Chosen += goBackRequest_Chosen;
                 m_SubMenuDict.Add(0, goBack);
@@ -125,15 +125,16 @@ namespace Ex04.Menus.Delegates
                 }
 
                 Console.Clear();
-                m_SubMenuDict[((int)parsedChoice)].aMethodForWindowsToTellMeIWasClicked(); 
+                m_SubMenuDict[((int)parsedChoice)].aMethodForWindowsToTellMeIWasClicked();
             }
         }
 
         public override string ToString()
         {
             StringBuilder consoleMessege = new StringBuilder();
-            consoleMessege.Append($"Current Menu Level: {m_LevelInMenu}{Environment.NewLine}");
 
+            consoleMessege.Append($"{m_Name}{Environment.NewLine}");
+            consoleMessege.Append($"Current Menu Level: {m_LevelInMenu}{Environment.NewLine}");
             foreach (KeyValuePair<int, MenuItem> item in m_SubMenuDict.Skip(1))
             {
                 consoleMessege.Append(singleMenuItemToString(item));

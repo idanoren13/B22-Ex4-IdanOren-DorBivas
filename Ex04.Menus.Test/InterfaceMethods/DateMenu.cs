@@ -9,7 +9,7 @@
         {
         }
 
-        public override void Execute()
+        public override void Act()
         {
             DateTime today = DateTime.Today;
             Console.WriteLine(today.ToString("dd/MM/yyyy"));

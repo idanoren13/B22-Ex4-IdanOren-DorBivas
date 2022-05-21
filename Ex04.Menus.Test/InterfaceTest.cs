@@ -6,20 +6,20 @@
 
     public class InterfaceTest
     {
-        private readonly MainMenu r_MainMenu;
+        private readonly MainMenu r_InterFaceMenu;
 
         public InterfaceTest()
         {
-            r_MainMenu = new MainMenu("Main delegates", new Dictionary<int, AbstractMenu>());
-            SubMenuItem countSpacesAndShowVersion = new SubMenuItem("Version and Spaces", new Dictionary<int, AbstractMenu>(), r_MainMenu);
-            SubMenuItem showTimeAndShowDate = new SubMenuItem("Shows Time/Date", new Dictionary<int, AbstractMenu>(), r_MainMenu);
+            r_InterFaceMenu = new MainMenu("Main delegates", new Dictionary<int, AbstractMenu>());
+            SubMenuItem countSpacesAndShowVersion = new SubMenuItem("Version and Spaces", new Dictionary<int, AbstractMenu>(), r_InterFaceMenu);
+            SubMenuItem showTimeAndShowDate = new SubMenuItem("Shows Time/Date", new Dictionary<int, AbstractMenu>(), r_InterFaceMenu);
             addSpacesAndShowVersion(countSpacesAndShowVersion);
             addShowTimeAndShowDate(showTimeAndShowDate);
         }
 
         public void Run()
         {
-            r_MainMenu.Show();
+            r_InterFaceMenu.Show();
         }
 
         private void addShowTimeAndShowDate(SubMenuItem i_ShowTimeAndShowDate)

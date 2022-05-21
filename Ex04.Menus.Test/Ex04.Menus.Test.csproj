@@ -43,11 +43,9 @@
   <ItemGroup>
     <Compile Include="ConsoleHandler.cs" />
     <Compile Include="InterfaceMethods\DateMenu.cs" />
-    <Compile Include="InterfaceMethods\DateTimeMenu.cs" />
     <Compile Include="InterfaceMethods\SpacesMenu.cs" />
     <Compile Include="InterfaceMethods\TimeMenu.cs" />
     <Compile Include="InterfaceMethods\VersionMenu.cs" />
-    <Compile Include="InterfaceMethods\VersionSpacesMenu.cs" />
     <Compile Include="InterfaceTest.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

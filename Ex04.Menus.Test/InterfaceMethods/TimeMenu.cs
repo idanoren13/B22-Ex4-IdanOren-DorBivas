@@ -10,7 +10,7 @@
         {
         }
 
-        public override void Execute()
+        public override void Act()
         {
             DateTime now = DateTime.Now;
             Console.WriteLine(now.ToString("HH:mm:ss"));

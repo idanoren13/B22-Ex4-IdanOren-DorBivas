@@ -10,9 +10,9 @@
         {
         }
 
-        public override void Execute()
+        public override void Act()
         {
-            Console.WriteLine("Version: 21.3.4.8933");
+            Console.WriteLine("Version: 22.2.4.8950");
         }
     }
 }

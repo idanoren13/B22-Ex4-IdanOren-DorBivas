@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using Ex04.Menus.Delegates;
 
 namespace Ex04.Menus.Test
@@ -42,7 +43,7 @@ namespace Ex04.Menus.Test
 
         public void ShowVersion_Chosen(MenuItem i_Invoker)
         {
-            Console.WriteLine("Version: 21.1.4.8930");
+            Console.WriteLine("Version: 22.2.4.8950");
         }
 
         public void CountSpaces_Chosen(MenuItem i_Invoker)
@@ -52,14 +53,7 @@ namespace Ex04.Menus.Test
 
             Console.WriteLine("Please enter a sentence: ");
             userInput = Console.ReadLine();
-            foreach (char character in userInput)
-            {
-                if (char.IsWhiteSpace(character))
-                {
-                    numberOfSpaces++;
-                }
-            }
-
+            numberOfSpaces = userInput.Count((char currentChar) => currentChar == ' ');
             Console.WriteLine("The number of spaces in the sentence is: {0}", numberOfSpaces);
         }
 

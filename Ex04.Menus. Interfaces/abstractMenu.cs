@@ -1,7 +1,8 @@
 ﻿namespace Ex04.Menus.Interfaces
 {
+    using System;
     using System.Collections.Generic;
-    
+
     public interface IMenu
     {
         void Show();
@@ -21,7 +22,6 @@
         protected string m_Name;
         protected AbstractMenu m_Base;
         protected eItemType m_ItemType = eItemType.Action;
-        protected int m_UserInput;
         protected Dictionary<int, AbstractMenu> m_MenuItems;
 
         public Dictionary<int, AbstractMenu> MenuItems
@@ -29,7 +29,7 @@
             get => m_MenuItems;
         }
 
-        public int Level 
+        public int Level
         {
             get => m_LevelInMenu;
             set => m_LevelInMenu = value;
@@ -51,6 +51,36 @@
             set => m_continueShowLoop = value;
         }
 
-        public abstract void Show();
+        protected virtual void initiateMenuDetails(string i_Name, Dictionary<int, AbstractMenu> i_SubMenus)
+        {
+            m_Name = i_Name;
+            m_MenuItems = i_SubMenus;
+            m_LevelInMenu = 1;
+            if (i_SubMenus != null)
+            {
+                m_ItemType = i_SubMenus.Count == 0 ? eItemType.Action : eItemType.Menu;
+            }
+        }
+
+        public virtual void Show()
+        {
+            uint parsedChoice;
+            bool isValid;
+
+            while (m_continueShowLoop)
+            {
+                Console.WriteLine(this.ToString());
+                isValid = uint.TryParse(Console.ReadLine(), out parsedChoice);
+                while (!isValid || parsedChoice >= m_MenuItems.Count)
+                {
+                    Console.WriteLine($"ivalid input please enter number between 0 to {m_MenuItems.Count - 1}");
+                    isValid = uint.TryParse(Console.ReadLine(), out parsedChoice);
+                }
+
+                Console.Clear();
+                m_MenuItems[(int)parsedChoice].Show();
+            }
+        }
     }
 }
+

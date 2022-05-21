@@ -1,9 +1,9 @@
 ﻿namespace Ex04.Menus.Interfaces
 {
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Text;
 
     public class SubMenuItem : AbstractMenu
     {
@@ -21,25 +21,12 @@ using System.Text;
 
         protected SubMenuItem(string i_Name, Dictionary<int, AbstractMenu> i_SubMenus)
         {
-            m_Name = i_Name;
-            m_MenuItems = i_SubMenus;
-            m_LevelInMenu = 1;
-            if (i_SubMenus != null)
-            {
-                m_ItemType = i_SubMenus.Count == 0 ? eItemType.Action : eItemType.Menu;
-            }
+            initiateMenuDetails(i_Name, i_SubMenus);
         }
 
         public SubMenuItem(string i_Name, Dictionary<int, AbstractMenu> i_SubMenus, SubMenuItem io_Base)
         {
-            m_LevelInMenu = 1;
-            m_Name = i_Name;
-            m_MenuItems = i_SubMenus;
-            if (i_SubMenus != null)
-            {
-                m_ItemType = i_SubMenus.Count == 0 ? eItemType.Action : eItemType.Menu;
-            }
-
+            initiateMenuDetails(i_Name, i_SubMenus);
             m_Base = io_Base;
             if (io_Base != null)
             {
@@ -62,36 +49,12 @@ using System.Text;
             m_MenuItems.Add(m_MenuItems.Count, i_Item);
         }
 
-        private void setBase(SubMenuItem i_Base)
-        {
-            m_Base = i_Base;
-        }
-
-        public override void Show()
-        {
-            uint parsedChoice;
-            bool isValid;
-
-            while (m_continueShowLoop)
-            {
-                Console.WriteLine(this.ToString());
-                isValid = uint.TryParse(Console.ReadLine(), out parsedChoice);
-                while (!isValid || parsedChoice >= m_MenuItems.Count)
-                {
-                    Console.WriteLine($"ivalid input please enter number between 0 to {m_MenuItems.Count - 1}");
-                    isValid = uint.TryParse(Console.ReadLine(), out parsedChoice);
-                }
-
-                Console.Clear();
-                m_MenuItems[(int)parsedChoice].Show();
-            }
-        }
-
         public override string ToString()
         {
             StringBuilder consoleMessege = new StringBuilder();
-            consoleMessege.Append($"Current Menu Level: {m_LevelInMenu}{Environment.NewLine}");
 
+            consoleMessege.Append($"{m_Name}{Environment.NewLine}");
+            consoleMessege.Append($"Current Menu Level: {m_LevelInMenu}{Environment.NewLine}");
             foreach (KeyValuePair<int, AbstractMenu> item in m_MenuItems.Skip(1))
             {
                 consoleMessege.Append(singleAbstractMenuToString(item));
@@ -101,6 +64,11 @@ using System.Text;
             consoleMessege.Remove(consoleMessege.Length - 1, 1);
 
             return consoleMessege.ToString();
+        }
+
+        private void setBase(SubMenuItem i_Base)
+        {
+            m_Base = i_Base;
         }
 
         private string singleAbstractMenuToString(KeyValuePair<int, AbstractMenu> i_DictionaryItem)

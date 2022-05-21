@@ -7,7 +7,7 @@ namespace Ex04.Menus.Interfaces
 {
     public abstract class FinalMenuItem : AbstractMenu
     {
-        public FinalMenuItem(string i_Name, SubMenuItem io_Base) 
+        public FinalMenuItem(string i_Name, SubMenuItem io_Base)
         {
             m_Name = i_Name;
             m_Base = io_Base;
@@ -17,9 +17,9 @@ namespace Ex04.Menus.Interfaces
 
         public override void Show()
         {
-            Execute();
+            Act();
         }
 
-        public abstract void Execute();
+        public abstract void Act();
     }
 }
