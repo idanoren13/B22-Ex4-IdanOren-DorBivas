@@ -12,8 +12,8 @@
     {
         public enum eItemType
         {
-            Action,
-            Menu
+            FinalMenu,
+            SubMenu
         }
 
         protected const string k_GoBackName = "Go Back";
@@ -21,7 +21,7 @@
         protected bool m_continueShowLoop = true;
         protected string m_Name;
         protected AbstractMenu m_Base;
-        protected eItemType m_ItemType = eItemType.Action;
+        protected eItemType m_ItemType = eItemType.FinalMenu;
         protected Dictionary<int, AbstractMenu> m_MenuItems;
 
         public Dictionary<int, AbstractMenu> MenuItems
@@ -58,7 +58,7 @@
             m_LevelInMenu = 1;
             if (i_SubMenus != null)
             {
-                m_ItemType = i_SubMenus.Count == 0 ? eItemType.Action : eItemType.Menu;
+                m_ItemType = i_SubMenus.Count == 0 ? eItemType.FinalMenu : eItemType.SubMenu;
             }
         }
 

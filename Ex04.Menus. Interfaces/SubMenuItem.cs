@@ -38,12 +38,12 @@
         public virtual void AddItem(AbstractMenu i_Item)
         {
             GoBackMenuItem goBack;
-            if (m_ItemType == eItemType.Action)
+            if (m_ItemType == eItemType.FinalMenu)
             {
                 goBack = new GoBackMenuItem();
                 goBack.setBase(this);
                 m_MenuItems.Add(0, goBack);
-                m_ItemType = eItemType.Menu;
+                m_ItemType = eItemType.SubMenu;
             }
 
             m_MenuItems.Add(m_MenuItems.Count, i_Item);
@@ -73,7 +73,7 @@
 
         private string singleAbstractMenuToString(KeyValuePair<int, AbstractMenu> i_DictionaryItem)
         {
-            string actionType = i_DictionaryItem.Value.ItemType == eItemType.Action ? "Action" : "Sub Menu";
+            string actionType = i_DictionaryItem.Value.ItemType == eItemType.FinalMenu ? "Action" : "Sub Menu";
 
             return string.Format("{0}. {1}({2}){3}", i_DictionaryItem.Key, i_DictionaryItem.Value.Name, actionType, Environment.NewLine);
         }
