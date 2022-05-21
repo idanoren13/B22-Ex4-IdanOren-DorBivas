@@ -33,11 +33,11 @@ namespace Ex04.Menus.Test
             showTime.Chosen += TimeRequest_Chosen;
         }
 
-        private void addSpacesAndShowVersion(MenuItem countSpacesAndShowVersion)
+        private void addSpacesAndShowVersion(MenuItem i_CountSpacesAndShowVersion)
         {
-            MenuItem countSpaces = new MenuItem("Count spaces", null, countSpacesAndShowVersion);
+            MenuItem countSpaces = new MenuItem("Count spaces", null, i_CountSpacesAndShowVersion);
             countSpaces.Chosen += CountSpaces_Chosen;
-            MenuItem showVersion = new MenuItem("Show Version", null, countSpacesAndShowVersion);
+            MenuItem showVersion = new MenuItem("Show Version", null, i_CountSpacesAndShowVersion);
             showVersion.Chosen += ShowVersion_Chosen;
         }
 

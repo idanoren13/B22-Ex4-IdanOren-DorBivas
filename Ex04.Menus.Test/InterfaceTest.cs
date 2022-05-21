@@ -28,10 +28,10 @@
             new TimeMenu("Show Time", i_ShowTimeAndShowDate);
         }
 
-        private void addSpacesAndShowVersion(SubMenuItem countSpacesAndShowVersion)
+        private void addSpacesAndShowVersion(SubMenuItem i_CountSpacesAndShowVersion)
         {
-            new SpacesMenu("Count spaces", countSpacesAndShowVersion);
-            new VersionMenu("Show Version", countSpacesAndShowVersion);
+            new SpacesMenu("Count spaces", i_CountSpacesAndShowVersion);
+            new VersionMenu("Show Version", i_CountSpacesAndShowVersion);
         }
     }
 }
